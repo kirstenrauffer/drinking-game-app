@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Message} from './shared/message.model';
-import {User} from './shared/user.model';
-import {SocketService} from './shared/socket.service';
+import { Component, OnInit } from '@angular/core';
+import { Message } from './shared/message.model';
+import { User } from './shared/user.model';
+import { SocketService } from './shared/socket.service';
 
-let AVATAR_URL = 'http://avatar.3sd.me/80';
+import { Angular2TokenService } from 'angular2-token';
+import { CookieService } from 'angular2-cookie/core';
+
+let AUTH_TOKEN = (Math.floor(Math.random() * (10000 - 0)) + 1).toString();
 
 @Component({
     selector: 'app-root',
@@ -12,21 +15,28 @@ let AVATAR_URL = 'http://avatar.3sd.me/80';
     providers: [SocketService]
 })
 export class AppComponent implements OnInit {
+    private rooms: string[];
     private user: User;
     private messages: Message[];
     private messageContent: string;
     private ioConnection: any;
 
-    constructor(private socketService: SocketService) {}
+    constructor(private socketService: SocketService,
+                private tokenService: Angular2TokenService,
+                private cookieService: CookieService,
+    ) {}
 
     ngOnInit(): void {
         this.initModel();
         this.initIoConnection();
+        this.cookieService.put('auth', 'klhgjfadkh987676hjgfhj')
+        this.tokenService.init();
     }
 
     private initModel(): void {
-        this.user = new User(this.getRandomUsername(), AVATAR_URL);
+        this.user = new User(this.getRandomUsername(), AUTH_TOKEN);
         this.messages = [];
+        this.rooms = [];
     }
 
     private initIoConnection(): void {

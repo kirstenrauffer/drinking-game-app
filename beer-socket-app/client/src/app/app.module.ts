@@ -7,6 +7,7 @@ import { BrowserAnimationsModule }  from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 
 import { Angular2TokenService } from 'angular2-token';
+import { CookieService } from 'angular2-cookie/core';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,10 @@ import { Angular2TokenService } from 'angular2-token';
     HttpModule,
     MaterialModule.forRoot()
   ],
-  providers: [Angular2TokenService],
+  providers: [
+    Angular2TokenService,
+    CookieService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
