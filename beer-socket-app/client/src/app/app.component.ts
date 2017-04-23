@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from './shared/message.model';
 import { User } from './shared/user.model';
+
 import { SocketService } from './shared/socket.service';
+
 import { Observable }  from 'rxjs';
 
 import { CookieService } from 'angular2-cookie/core';
