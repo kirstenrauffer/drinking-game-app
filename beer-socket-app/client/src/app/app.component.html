@@ -25,10 +25,27 @@
                 <md-icon>send</md-icon>
             </button>
         </div>
-        <md-list class="chat-container">
-            <md-list-item *ngFor="let message of messages">
+        <md-list class="chat-container" *ngIf="messages.length > 0">
+            <md-list-item *ngFor="let message of messages" class="list-item">
                 <p md-line>
-                    <span> {{message.room}} </span>
+                    <span>Joined {{ message.room }} </span>
+                </p>
+            </md-list-item>
+        </md-list>
+        <md-list class="chat-container">
+            <md-list-item class="list-item">
+                <p md-line>
+                    <span> UI test </span>
+                </p>
+            </md-list-item>
+            <md-list-item class="list-item">
+                <p md-line>
+                    <span> UI test </span>
+                </p>
+            </md-list-item>
+            <md-list-item class="list-item">
+                <p md-line>
+                    <span> UI test </span>
                 </p>
             </md-list-item>
         </md-list>

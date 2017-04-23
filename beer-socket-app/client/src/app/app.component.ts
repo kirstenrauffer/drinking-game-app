@@ -37,7 +37,13 @@ export class AppComponent implements OnInit {
         this.tokenService.init();
 
         this.roomUpdateObservable = this.socketService.responseMessageObservable;
-        this.roomUpdateObservable.subscribe(room => this.messages.push({room: room}));
+        this.roomUpdateObservable.subscribe(room => this.addToMessagesArray(room));
+    }
+
+    addToMessagesArray(room: string): void {
+        if(room !== '') { 
+            this.messages.push({room: room}) 
+        }
     }
 
     private initModel(): void {
