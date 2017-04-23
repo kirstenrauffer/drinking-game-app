@@ -3,8 +3,8 @@ import { Message } from './shared/message.model';
 import { User } from './shared/user.model';
 import { SocketService } from './shared/socket.service';
 
-import { Angular2TokenService } from 'angular2-token';
 import { CookieService } from 'angular2-cookie/core';
+import { Angular2TokenService } from 'angular2-token';
 
 let AUTH_TOKEN = (Math.floor(Math.random() * (10000 - 0)) + 1).toString();
 
@@ -21,20 +21,25 @@ export class AppComponent implements OnInit {
     private messageContent: string;
     private ioConnection: any;
 
-    constructor(private socketService: SocketService,
-                private tokenService: Angular2TokenService,
+    constructor(private tokenService: Angular2TokenService,
+                private socketService: SocketService,
                 private cookieService: CookieService,
     ) {}
 
     ngOnInit(): void {
+        if (this.cookieService.get('auth_token') === undefined || this.cookieService.get('auth_token') === '') {
+            this.cookieService.put('auth_token', AUTH_TOKEN);
+        } 
+
         this.initModel();
         this.initIoConnection();
-        this.cookieService.put('auth', 'klhgjfadkh987676hjgfhj')
         this.tokenService.init();
     }
 
     private initModel(): void {
-        this.user = new User(this.getRandomUsername(), AUTH_TOKEN);
+        this.user = new User('Betty', this.cookieService.get('auth_token'));
+        this.createUser();
+
         this.messages = [];
         this.rooms = [];
     }
@@ -45,12 +50,12 @@ export class AppComponent implements OnInit {
         });
     }
 
-    private getRandomUsername(): string {
-        return 'User-' + (Math.floor(Math.random() * (10000 - 0)) + 1);
+    sendMessage(): void {
+        this.socketService.send(new Message(this.user.name, this.messageContent));
+        this.messageContent = null;
     }
 
-    sendMessage(): void {
-        this.socketService.send(new Message(this.user, this.messageContent));
-        this.messageContent = null;
+    createUser(): void {
+        this.socketService.createUser(this.user);
     }
 }

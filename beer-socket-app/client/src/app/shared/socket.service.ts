@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Message} from './message.model';
-import {User} from './user.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Message } from './message.model';
+import { User } from './user.model';
+import { CookieService } from 'angular2-cookie/core';
 
 import * as socketIo from 'socket.io-client';
 
@@ -13,12 +14,18 @@ let SERVER_URL = 'http://10.93.166.24:5000';
 export class SocketService {
     private socket;
 
-    constructor() {
+    constructor(private cookieService: CookieService) {
         this.initSocket();
+        this.cookieService.put('user_token', 'klhgjfadkh987676hjgfhj')
     }
 
     private initSocket(): void {
-        this.socket = socketIo(SERVER_URL);
+        this.socket = io.connect(SERVER_URL,
+            {
+                'transports': ['websocket'],
+                'query': 'user_token='+ this.cookieService.get('user_token')
+            }
+        );
     }
 
     public createUser(user: User): void {
