@@ -1,5 +1,4 @@
 <md-sidenav-container>
-
     <md-sidenav #sidenav mode="side">
         <h3>Configuration</h3>
         <md-input-container style="width: 100%">
@@ -11,14 +10,14 @@
         <button md-icon-button (click)="sidenav.toggle()">
             <md-icon>menu</md-icon>
         </button>
-        <span>Angular Chat</span>
+        <span>Game hub</span>
     </md-toolbar>
           
     <md-card>
         <div class="chat-input">
             <md-icon>message</md-icon>
-            <md-input-container style="width: 100%">
-                <input mdInput #inputMessage placeholder="Type your message"
+            <md-input-container>
+                <input mdInput #inputMessage placeholder="Enter a room name"
                       [(ngModel)]="messageContent"
                       maxlength="140"
                 >
@@ -29,7 +28,6 @@
         </div>
         <md-list class="chat-container">
             <md-list-item *ngFor="let message of messages">
-                <img md-list-avatar src="{{message.from.avatar}}">
                 <p md-line>
                     <span> {{message.room}} </span>
                 </p>

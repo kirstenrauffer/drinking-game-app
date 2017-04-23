@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Message } from './shared/message.model';
 import { User } from './shared/user.model';
 import { SocketService } from './shared/socket.service';
+import { Observable }  from 'rxjs';
 
 import { CookieService } from 'angular2-cookie/core';
 import { Angular2TokenService } from 'angular2-token';
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
     private user: User;
     private messages: Message[];
     private messageContent: string;
-    private ioConnection: any;
+    private roomUpdateObservable: Observable<string>;
 
     constructor(private tokenService: Angular2TokenService,
                 private socketService: SocketService,
@@ -45,9 +46,8 @@ export class AppComponent implements OnInit {
     }
 
     private initIoConnection(): void {
-        this.ioConnection = this.socketService.get().subscribe((message: Message) => {
-            this.messages.push(message);
-        });
+        this.socketService.getRoomUpdates();
+        this.roomUpdateObservable.subscribe(room => this.messages.push({room: room}));
     }
 
     sendMessage(): void {

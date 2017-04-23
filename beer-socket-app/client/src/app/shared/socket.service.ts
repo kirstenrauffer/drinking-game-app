@@ -4,6 +4,8 @@ import { Message } from './message.model';
 import { User } from './user.model';
 import { CookieService } from 'angular2-cookie/core';
 
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject';
+
 import * as socketIo from 'socket.io-client';
 
 let SERVER_URL = 'http://10.93.166.24:5000';
@@ -26,6 +28,15 @@ export class SocketService {
                 'query': 'user_token='+ this.cookieService.get('user_token')
             }
         );
+    }
+
+    private responseMessage = new BehaviorSubject(String(''));
+    public responseMessageObservable = this.responseMessage.asObservable();
+
+    public getRoomUpdates(): void {
+        this.socket.on('room update', function(rooms) {
+            this.responseMessage.next(rooms);
+        });
     }
 
     public createUser(user: User): void {
