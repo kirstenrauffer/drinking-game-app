@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     }
 
     sendMessage(): void {
-        this.socketService.send(new Message(this.user.name, this.messageContent));
+        this.socketService.send(new Message(this.messageContent));
         this.messageContent = null;
     }
 

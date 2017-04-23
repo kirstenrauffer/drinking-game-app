@@ -20,7 +20,7 @@ export class SocketService {
     }
 
     private initSocket(): void {
-        this.socket = io.connect(SERVER_URL,
+        this.socket = socketIo(SERVER_URL,
             {
                 'transports': ['websocket'],
                 'query': 'user_token='+ this.cookieService.get('user_token')
