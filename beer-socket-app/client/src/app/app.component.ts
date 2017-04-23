@@ -35,6 +35,9 @@ export class AppComponent implements OnInit {
         this.initModel();
         this.initIoConnection();
         this.tokenService.init();
+
+        this.roomUpdateObservable = this.socketService.responseMessageObservable;
+        this.roomUpdateObservable.subscribe(room => this.messages.push({room: room}));
     }
 
     private initModel(): void {
@@ -47,7 +50,6 @@ export class AppComponent implements OnInit {
 
     private initIoConnection(): void {
         this.socketService.getRoomUpdates();
-        this.roomUpdateObservable.subscribe(room => this.messages.push({room: room}));
     }
 
     sendMessage(): void {
